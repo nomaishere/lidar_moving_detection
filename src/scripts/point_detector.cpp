@@ -70,7 +70,7 @@ void scannerCallback(const sensor_msgs::LaserScan::ConstPtr &scan)
         }
         tempPoint.erase(it);
         tempPoint.push_back(scan->ranges);
-        ROS_INFO("size: %d, %f", tempPoint.size(), tempPoint.back()[100]);
+        ROS_INFO("size: %d, %d", tempPoint.size(), tempPoint.back().size());
     }
 }
 
