@@ -10,9 +10,9 @@
 #define RAD_TO_DEG(x) ((x)*180. / M_PI)
 
 /*
-class PointStorage
-{
-private:
+    class PointStorage
+    {
+    private:
     std::vector<std::vector<float>> pointVector;
 
 public:
@@ -38,7 +38,7 @@ void movingDetector()
 */
 
 std::vector<std::vector<float>> tempPoint(0);
-bool isStart = false;
+int count = 0;
 
 void scannerCallback(const sensor_msgs::LaserScan::ConstPtr &scan)
 {
@@ -47,17 +47,30 @@ void scannerCallback(const sensor_msgs::LaserScan::ConstPtr &scan)
     {
         ROS_INFO("Detected");
     }*/
-    if (isStart == false)
+    if (count < 10)
     {
         tempPoint.push_back(scan->ranges);
-        ROS_INFO("init");
-        isStart = true;
+        ROS_INFO("%d, %d", count, tempPoint.size());
+        count++;
     }
     else
     {
-        if (abs(tempPoint.back()[120] - scan->ranges[120]) > 0.02)
-            ROS_INFO("detected : %f", abs(tempPoint.back()[120] - scan->ranges[120]));
+        //if (abs(tempPoint.back()[120] - scan->ranges[120]) > 0.02)
+        //ROS_INFO("Size : %d", tempPoint.size());
+        //ROS_INFO("detected : %f", abs(tempPoint.back()[120] - scan->ranges[120]));
+        //tempPoint::iterator it;
+        int iteratorCount = 1;
+        auto it = tempPoint.begin();
+        for (; it < tempPoint.end() - 1; it++)
+        {
+            //ROS_INFO("%d", iteratorCount);
+            tempPoint.erase(it);
+            tempPoint.insert(it, tempPoint[iteratorCount]);
+            iteratorCount++;
+        }
+        tempPoint.erase(it);
         tempPoint.push_back(scan->ranges);
+        ROS_INFO("size: %d, %f", tempPoint.size(), tempPoint.back()[100]);
     }
 }
 
