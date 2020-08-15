@@ -19,3 +19,7 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(rpscan_listener src/scripts/rpscan_listener.cpp)
 target_link_libraries(rpscan_listener ${catkin_LIBRARIES})
 add_dependencies(rpscan_listener lidar_moving_detection_generate_messages_cpp)
+
+add_executable(point_detector src/scripts/point_detector.cpp)
+target_link_libraries(point_detector ${catkin_LIBRARIES})
+add_dependencies(point_detector lidar_moving_detection_generate_messages_cpp)
